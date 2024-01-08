@@ -13,6 +13,7 @@ __all__ = [
     'BadResponseException',
 
     # Exceptions by HTTP status code
+    # https://trakt.docs.apiary.io/#introduction/status-codes
     'BadRequestException',
     'OAuthException',
     'ForbiddenException',
@@ -76,7 +77,7 @@ class NotFoundException(TraktException):
 class MethodNotAllowedException(TraktException):
     """TraktException type to be raised when a 405 return code is received"""
     http_code = 405
-    message = 'Method not Allowed'
+    message = 'Method Not Found - method doesn\'t exist'
 
 
 class ConflictException(TraktException):
@@ -104,7 +105,16 @@ class RateLimitException(TraktException):
 
     @property
     def retry_after(self):
-        return int(self.response.headers.get("Retry-After", 1))
+        return int(self.response.headers.get("retry-after", 1))
+
+    @property
+    def details(self):
+        from json import JSONDecodeError, loads
+
+        try:
+            return loads(self.response.headers.get("x-ratelimit", ""))
+        except JSONDecodeError:
+            return None
 
 
 class TraktInternalException(TraktException):
