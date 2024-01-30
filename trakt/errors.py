@@ -11,6 +11,7 @@ __all__ = [
 
     # Errors for use by PyTrakt
     'BadResponseException',
+    'OAuthRefreshException',
 
     # Exceptions by HTTP status code
     # https://trakt.docs.apiary.io/#introduction/status-codes
@@ -60,6 +61,20 @@ class OAuthException(TraktException):
     """TraktException type to be raised when a 401 return code is received"""
     http_code = 401
     message = 'Unauthorized - OAuth must be provided'
+
+
+class OAuthRefreshException(OAuthException):
+    def __init__(self, response=None):
+        super().__init__(response)
+        self.data = self.response.json()
+
+    @property
+    def error(self):
+        return self.data["error"]
+
+    @property
+    def error_description(self):
+        return self.data["error_description"]
 
 
 class ForbiddenException(TraktException):

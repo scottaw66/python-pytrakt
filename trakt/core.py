@@ -416,7 +416,7 @@ def _refresh_token(s):
                 'grant_type': 'refresh_token'
             }
     response = session.post(url, json=data, headers=HEADERS)
-    s.logger.debug('RESPONSE [post] (%s): %s', url, str(response))
+    s.logger.debug('RESPONSE [post] (%s): %s - %s', url, str(response), response.content)
     if response.status_code == 200:
         data = response.json()
         OAUTH_TOKEN = data.get("access_token")
@@ -433,13 +433,14 @@ def _refresh_token(s):
             OAUTH_TOKEN=OAUTH_TOKEN, OAUTH_REFRESH=OAUTH_REFRESH,
             OAUTH_EXPIRES_AT=OAUTH_EXPIRES_AT
         )
-    elif response.status_code == 401:
-        s.logger.debug(
-            "Rejected - Unable to refresh expired OAuth token, "
-            "refresh_token is invalid"
-        )
+    elif response.status_code in (401, 400):
+        from .errors import OAuthRefreshException
+        raise OAuthRefreshException(response)
     elif response.status_code in s.error_map:
         raise s.error_map[response.status_code](response)
+    else:
+        from .errors import BadRequestException
+        raise BadRequestException(response)
 
 
 def load_config():
