@@ -865,12 +865,12 @@ class TVEpisode(IdsMixin):
         '"""
         return self.overview
 
-    def rate(self, rating):
+    def rate(self, rating, rated_at=None):
         """Rate this :class:`TVEpisode` on trakt. Depending on the current users
         settings, this may also send out social updates to facebook, twitter,
         tumblr, and path.
         """
-        return rate(self, rating)
+        return rate(self, rating, rated_at)
 
     def add_to_library(self):
         """Add this :class:`TVEpisode` to your Trakt.tv library"""
