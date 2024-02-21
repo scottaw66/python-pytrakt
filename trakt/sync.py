@@ -45,13 +45,15 @@ def rate(media, rating, rated_at=None):
 
     :param media: The media object to post a rating to
     :param rating: A rating from 1 to 10 for the media item
-    :param rated_at: A `datetime.datetime` object indicating the time at which
+    :param rated_at: A `datetime.datetime` object or `str` indicating the time at which
         this rating was created
     """
     if rated_at is None:
         rated_at = datetime.now(tz=timezone.utc)
+    if not isinstance(rated_at, str):
+        rated_at = timestamp(rated_at)
 
-    data = dict(rating=rating, rated_at=timestamp(rated_at))
+    data = dict(rating=rating, rated_at=rated_at)
     data.update(media.ids)
     result = yield 'sync/ratings', {media.media_type: [data]}
     yield result
