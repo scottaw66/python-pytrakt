@@ -99,6 +99,13 @@ class ListEntry:
     def show(self):
         return TVShow(**self.data)
 
+    @property
+    def season(self):
+        show = self.data["show"]
+        season = self.data["number"]
+        ids = show["ids"]
+        return TVSeason(show=show["title"], season=season, slug=ids["slug"])
+
     def __getattr__(self, name):
         """
         Delegate everything missing to sub-item
@@ -170,6 +177,8 @@ class PublicList(DataClassMixin(ListDescription), IdsMixin):
             if "type" not in item:
                 continue
             data = item.pop(item["type"])
+            if "show" in item:
+                data["show"] = item.pop("show")
             yield ListEntry(**item, data=data)
 
 
