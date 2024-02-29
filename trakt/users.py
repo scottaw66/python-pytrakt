@@ -106,6 +106,13 @@ class ListEntry:
         ids = show["ids"]
         return TVSeason(show=show["title"], season=season, slug=ids["slug"])
 
+    @property
+    def episode(self):
+        data = self.data.copy()
+        show = data.pop("show")
+        ids = show["ids"]
+        return TVEpisode(show=show["title"], show_id=ids["trakt"], **data)
+
     def __getattr__(self, name):
         """
         Delegate everything missing to sub-item
