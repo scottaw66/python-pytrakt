@@ -11,7 +11,7 @@ from trakt.tv import TVEpisode, TVSeason, TVShow
 from trakt.utils import slugify
 
 __author__ = 'Jon Nappi'
-__all__ = ['User', 'UserList', 'Request', 'follow', 'get_all_requests',
+__all__ = ['User', 'UserList', 'PublicList', 'Request', 'follow', 'get_all_requests',
            'get_user_settings', 'unfollow']
 
 
