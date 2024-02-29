@@ -68,6 +68,37 @@ def unfollow(user_name):
 
 
 @dataclass(frozen=True)
+class ListEntry:
+    id: int
+    rank: int
+    listed_at: str
+    type: str
+    # data for "type" structure
+    data: Any
+    notes: Optional[str] = None
+
+    @property
+    def item(self):
+        # Poor man's cached_property
+        if self.type not in self.__dict__:
+            self.__dict__[self.type] = getattr(self, self.type)
+
+        return self.__dict__[self.type]
+
+    @property
+    def movie(self):
+        data = self.data.copy()
+        title = data.pop("title")
+        return Movie(title, **data)
+
+    def __getattr__(self, name):
+        """
+        Delegate everything missing to sub-item
+        """
+        return self.item.__getattribute__(name)
+
+
+@dataclass(frozen=True)
 class ListDescription:
     name: str
     description: str
