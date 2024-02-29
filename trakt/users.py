@@ -95,6 +95,10 @@ class ListEntry:
         title = data.pop("title")
         return Movie(title, **data)
 
+    @property
+    def show(self):
+        return TVShow(**self.data)
+
     def __getattr__(self, name):
         """
         Delegate everything missing to sub-item
