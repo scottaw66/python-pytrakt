@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any, NamedTuple, Optional
+from typing import Any, NamedTuple, Optional, Union
 
 from trakt.core import delete, get, post
 from trakt.mixins import DataClassMixin, IdsMixin
@@ -97,7 +97,7 @@ class PublicList(DataClassMixin(ListDescription), IdsMixin):
 
     @classmethod
     @get
-    def load(cls, id: int) -> "PublicList":
+    def load(cls, id: int) -> Union[ListEntry, PublicList]:
         """
         https://trakt.docs.apiary.io/#reference/lists/list/get-list
         """
