@@ -95,6 +95,9 @@ class PublicList(DataClassMixin(ListDescription), IdsMixin):
         self._ids = ids
         self._items = None
 
+    def __len__(self):
+        return len(self.items)
+
     @classmethod
     @get
     def load(cls, id: int) -> Union[ListEntry, PublicList]:
