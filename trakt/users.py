@@ -66,7 +66,7 @@ def unfollow(user_name):
 
 
 @dataclass(frozen=True)
-class UserListEntry:
+class ListDescription:
     name: str
     description: str
     privacy: str
@@ -85,7 +85,7 @@ class UserListEntry:
     creator: str
 
 
-class UserList(DataClassMixin(UserListEntry), IdsMixin):
+class UserList(DataClassMixin(ListDescription), IdsMixin):
     """A list created by a Trakt.tv :class:`User`"""
 
     def __init__(self, ids=None, **kwargs):
