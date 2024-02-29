@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Interfaces to all of the User objects offered by the Trakt.tv API"""
 from dataclasses import dataclass
-from typing import Any, NamedTuple
+from typing import Any, NamedTuple, Optional
 
 from trakt.core import delete, get, post
 from trakt.mixins import DataClassMixin, IdsMixin
@@ -82,7 +82,7 @@ class ListDescription:
     comment_count: int
     likes: int
     user: Any
-    creator: str
+    creator: Optional[str] = None
 
 
 class UserList(DataClassMixin(ListDescription), IdsMixin):
