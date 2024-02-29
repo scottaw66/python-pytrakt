@@ -85,6 +85,70 @@ class ListDescription:
     creator: Optional[str] = None
 
 
+class PublicList(DataClassMixin(ListDescription), IdsMixin):
+    """A record for public lists """
+
+    def __init__(self, ids=None, **kwargs):
+        super().__init__(**kwargs)
+        self._ids = ids
+        self._items = None
+
+    @classmethod
+    @get
+    def load(cls, id: int) -> "PublicList":
+        """
+        https://trakt.docs.apiary.io/#reference/lists/list/get-list
+        """
+        data = yield f"lists/{id}"
+        yield cls(**data)
+
+    @property
+    def items(self):
+        if self._items is None:
+            self._load_items()
+        return self._items
+
+    @get
+    def _load_items(self):
+        """
+        https://trakt.docs.apiary.io/#reference/lists/list-items
+        """
+        data = yield f"lists/{self.trakt}/items"
+        self._items = list(self._process_items(data))
+        yield self._items
+
+    @staticmethod
+    def _process_items(items):
+        for item in items:
+            # match list item type
+            if "type" not in item:
+                continue
+            item_type = item["type"]
+            data = item.pop(item_type)
+            if item_type == "movie":
+                title = data.pop("title")
+                movie = Movie(title, **data)
+                yield movie
+            elif item_type == "show":
+                show = TVShow(data["title"], data["ids"]["slug"])
+                yield show
+            elif item_type == "season":
+                show_data = item.pop("show")
+                season = TVSeason(show_data["title"],
+                                  data["number"],
+                                  show_data["ids"]["slug"])
+                yield season
+            elif item_type == "episode":
+                show_data = item.pop("show")
+                episode = TVEpisode(show_data["title"], data["season"],
+                                    data["number"],
+                                    show_id=show_data["ids"]["trakt"])
+                yield episode
+            elif item_type == "person":
+                person = Person(data["name"], data["ids"]["slug"])
+                yield person
+
+
 class UserList(DataClassMixin(ListDescription), IdsMixin):
     """A list created by a Trakt.tv :class:`User`"""
 
