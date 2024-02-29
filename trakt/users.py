@@ -79,7 +79,13 @@ class ListEntry:
     def item(self):
         # Poor man's cached_property
         if self.type not in self.__dict__:
-            self.__dict__[self.type] = getattr(self, self.type)
+            # Avoid recursion
+            error = object()
+            self.__dict__[self.type] = error
+            value = getattr(self, self.type, None)
+            if value is error:
+                raise RuntimeError(f"Invalid type: {self.type}")
+            self.__dict__[self.type] = value
 
         return self.__dict__[self.type]
 
