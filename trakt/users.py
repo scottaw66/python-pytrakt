@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 """Interfaces to all of the User objects offered by the Trakt.tv API"""
-from __future__ import annotations
-
 from dataclasses import dataclass
 from typing import Any, NamedTuple, Optional, Union
 
@@ -134,7 +132,7 @@ class PublicList(DataClassMixin(ListDescription), IdsMixin):
 
     @classmethod
     @get
-    def load(cls, id: int) -> Union[ListEntry, PublicList]:
+    def load(cls, id: int) -> Union[ListEntry, "PublicList"]:
         """
         https://trakt.docs.apiary.io/#reference/lists/list/get-list
         """
