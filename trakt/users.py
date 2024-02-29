@@ -95,6 +95,9 @@ class PublicList(DataClassMixin(ListDescription), IdsMixin):
         self._ids = ids
         self._items = None
 
+    def __iter__(self):
+        return iter(self.items)
+
     def __len__(self):
         return len(self.items)
 
