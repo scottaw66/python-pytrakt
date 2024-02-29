@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 """Interfaces to all of the User objects offered by the Trakt.tv API"""
+from __future__ import annotations
+
 from dataclasses import dataclass
 from typing import Any, NamedTuple, Optional
 
