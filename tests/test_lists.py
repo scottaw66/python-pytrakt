@@ -10,3 +10,6 @@ def test_public_list():
     assert l.name == "MARVEL Cinematic Universe"
     assert l.privacy == "public"
     assert l.share_link == "https://trakt.tv/lists/1248149"
+
+    # Test iter
+    assert len(l) == 4
