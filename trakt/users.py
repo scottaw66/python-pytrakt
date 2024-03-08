@@ -101,10 +101,11 @@ class ListEntry:
 
     @property
     def season(self):
-        show = self.data["show"]
-        season = self.data["number"]
+        data = self.data.copy()
+        show = data.pop("show")
+        season = data.pop("number")
         ids = show["ids"]
-        return TVSeason(show=show["title"], season=season, slug=ids["slug"])
+        return TVSeason(show=show["title"], season=season, slug=ids["slug"], **data)
 
     @property
     def episode(self):
