@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from trakt.movies import Movie
+from trakt.tv import TVEpisode, TVSeason, TVShow
 from trakt.users import PublicList
 
 
@@ -13,3 +15,7 @@ def test_public_list():
 
     # Test iter
     assert len(l) == 4
+
+    # enumerate list items
+    instancetypes = (Movie, TVShow, TVSeason, TVEpisode)
+    assert all([isinstance(k.item, instancetypes) for k in l])
