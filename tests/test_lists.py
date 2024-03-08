@@ -19,3 +19,6 @@ def test_public_list():
     # enumerate list items
     instancetypes = (Movie, TVShow, TVSeason, TVEpisode)
     assert all([isinstance(k.item, instancetypes) for k in l])
+
+    # trakt id is a number
+    assert all([isinstance(k.trakt, int) for k in l])
