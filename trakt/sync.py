@@ -359,6 +359,27 @@ def get_playback(list_type=None):
 
     https://trakt.docs.apiary.io/#reference/sync/playback/get-playback-progress
     """
+    valid_type = ("movies", "episodes")
+
+    if list_type and list_type not in valid_type:
+        raise ValueError(f"Invalid list_type: {list_type}. Must be one of {valid_type}")
+
+    uri = "sync/playback"
+    if list_type:
+        uri += f"/{list_type}"
+
+    items = yield uri
+    results = []
+    for item in items:
+        if "type" not in item:
+            continue
+        data = item.pop(item["type"])
+        if "show" in item:
+            data["show"] = item.pop("show")
+        results.append(PlaybackEntry(**item, data=data))
+
+    yield results
+
 
 @get
 def get_watchlist(list_type=None, sort=None):
