@@ -17,7 +17,7 @@ This module is designed to be a Pythonic interface to the `Trakt.tv <http://trak
 REST API. The official documentation for which can be found `here <http://docs.trakt.apiary.io/#>`_.
 trakt contains interfaces to all of the Trakt.tv functionality in an, ideally, easily
 scriptable fashion. For more information on this module's contents and example usages
-please see the `PyTrakt docs <http://pytrakt.readthedocs.io/en/latest/>`_.
+please see the `PyTrakt docs <https://glensc.github.io/python-pytrakt/>`_.
 
 More information about getting started and accessing the information you thirst for
 can be found throughout the documentation below.
