@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 """This module contains Trakt.tv sync endpoint support functions"""
 from collections import defaultdict
+from dataclasses import dataclass
 from datetime import datetime, timezone
+from typing import Any
 
 from deprecated import deprecated
 
@@ -10,10 +12,21 @@ from trakt.utils import slugify, timestamp
 
 __author__ = 'Jon Nappi'
 __all__ = ['Scrobbler', 'comment', 'rate', 'add_to_history', 'get_collection',
+           'PlaybackEntry',
            'get_watchlist', 'add_to_watchlist', 'remove_from_history',
            'remove_from_watchlist', 'add_to_collection',
            'remove_from_collection', 'search', 'search_by_id', 'checkin_media',
            'delete_checkin']
+
+
+@dataclass(frozen=True)
+class PlaybackEntry:
+    progress: float
+    paused_at: str
+    id: int
+    type: str
+    # data for "type" structure
+    data: Any
 
 
 @post
