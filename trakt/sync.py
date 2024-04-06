@@ -12,7 +12,7 @@ from trakt.utils import slugify, timestamp
 
 __author__ = 'Jon Nappi'
 __all__ = ['Scrobbler', 'comment', 'rate', 'add_to_history', 'get_collection',
-           'PlaybackEntry',
+           'PlaybackEntry', 'get_playback',
            'get_watchlist', 'add_to_watchlist', 'remove_from_history',
            'remove_from_watchlist', 'add_to_collection',
            'remove_from_collection', 'search', 'search_by_id', 'checkin_media',
@@ -337,6 +337,28 @@ def search_by_id(query, id_type='imdb', media_type=None, slugify_query=False):
             results.append(Person(**d.pop('person')))
     yield results
 
+
+@get
+def get_playback(list_type=None):
+    """
+    Get playback progress.
+
+    Whenever a scrobble is paused, the playback progress is saved. Use this
+    progress to sync up playback across different media centers or apps.
+
+    For example, you can start watching a movie in a media center, stop it,
+    then resume on your tablet from the same spot. Each item will have the
+    progress percentage between 0 and 100.
+
+    You can optionally specify a type to only get movies or episodes.
+
+    By default, all results will be returned.
+
+    Pagination is optional and can be used for something like an "on deck"
+    feature, or if you only need a limited data set.
+
+    https://trakt.docs.apiary.io/#reference/sync/playback/get-playback-progress
+    """
 
 @get
 def get_watchlist(list_type=None, sort=None):
