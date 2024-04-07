@@ -8,6 +8,7 @@ from typing import Any
 from deprecated import deprecated
 
 from trakt.core import delete, get, post
+from trakt.mixins import IdsMixin
 from trakt.utils import slugify, timestamp
 
 __author__ = 'Jon Nappi'
@@ -20,13 +21,17 @@ __all__ = ['Scrobbler', 'comment', 'rate', 'add_to_history', 'get_collection',
 
 
 @dataclass(frozen=True)
-class PlaybackEntry:
+class PlaybackEntry(IdsMixin):
     progress: float
     paused_at: str
     id: int
     type: str
     # data for "type" structure
     data: Any
+
+    @property
+    def _ids(self):
+        return self.data["ids"]
 
 
 @post
