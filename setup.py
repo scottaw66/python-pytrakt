@@ -2,7 +2,7 @@ from setuptools import setup
 
 import trakt
 
-__author__ = 'Elan Ruusamäe, Jon Nappi'
+__author__ = 'Scott Willsey'
 
 with open('README.rst') as f:
     readme = f.read()
@@ -20,9 +20,9 @@ setup(
     version=trakt.__version__,
     description=description,
     long_description='\n'.join([readme, history]),
-    author='Elan Ruusamäe',
-    author_email='glen@pld-linux.org',
-    url='https://github.com/glensc/python-pytrakt',
+    author='Scott Willsey',
+    author_email='gallant_07_skull@icloud.com',
+    url='https://github.com/scottaw66/python-pytrakt',
     packages=packages,
     install_requires=requires,
     license='Apache 2.0',
