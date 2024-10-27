@@ -7,4 +7,4 @@ except ImportError:
 
 from .__version__ import __version__
 
-__author__ = 'Jon Nappi, Elan Ruusamäe'
+__author__ = 'Jon Nappi, Elan Ruusamäe,  Scott Willsey'
