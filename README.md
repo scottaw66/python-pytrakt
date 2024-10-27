@@ -1,4 +1,4 @@
-# PyTrakt
+# PyTrakt3000
 
 This module is designed to be a Pythonic interface to the [Trakt.tv](http://trakt.tv).
 REST API, the official documentation for which can be found [here](http://docs.trakt.apiary.io/#).
@@ -17,11 +17,11 @@ can be found throughout the documentation below.
 
 ### Get the code
 
-This version of trakt is available on [GitHub](https://github.com/scottaw66/python-pytrakt).
+This version of trakt is available on [GitHub](https://github.com/scottaw66/pytrakt3000).
 
 You can clone the public repository::
 
-    git clone git://github.com/scottaw66/python-pytrakt.git
+    git clone git://github.com/scottaw66/pytrakt3000.git
 
 Once you have a copy of the source, you can embed it in your Python package,
 or install it into your site-packages easily from inside the project (at the setup.py level)::
