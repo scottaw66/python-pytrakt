@@ -17,14 +17,6 @@ can be found throughout the documentation below.
 
 Installation
 ------------
-There are two ways through which you can install trakt
-
-Install Via Pip
-^^^^^^^^^^^^^^^
-To install with `pip <http://www.pip-installer.org/>`_, just run this in your terminal::
-
-    $ pip install pytrakt
-
 Get the code
 ^^^^^^^^^^^^
 This version of trakt is available on `GitHub <https://github.com/scottaw66/python-pytrakt>`_.
