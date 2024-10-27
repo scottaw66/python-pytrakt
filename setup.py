@@ -14,12 +14,12 @@ description = ('Pythonic abstraction layer for easier scripting of the '
                'Trakt.tv REST API.')
 
 setup(
-    name='pytrakt',
+    name='pytrakt3000',
     version=trakt.__version__,
     description=description,
     author='Scott Willsey',
     author_email='gallant_07_skull@icloud.com',
-    url='https://github.com/scottaw66/python-pytrakt',
+    url='https://github.com/scottaw66/pytrakt3000',
     packages=packages,
     install_requires=requires,
     license='Apache 2.0',
