@@ -328,7 +328,7 @@ class User:
         super().__init__()
         self.username = username
         self._calendar = self._last_activity = self._watching = None
-        self._movies = self._movie_collection = self._movies_watched = None
+        self._movies = self._movie_collection = self._movies_watched = self._history_movies = None
         self._shows = self._show_collection = self._shows_watched = None
         self._lists = self._followers = self._following = self._friends = None
         self._collected = self._watched_shows = self._episode_ratings = None
@@ -563,6 +563,30 @@ class User:
             ep_data.update(data, show=sh_data.get('title'),
                            show_id=sh_data.get('trakt'))
             yield TVEpisode(**ep_data)
+            
+    @property
+    @get
+    def history_movies(self, start_date=None, end_date=None):
+        """Watched history for all :class:`Movie`'s in this :class:`User`'s
+        collection.
+        """
+        if self._history_movies is None:
+            url = 'users/{user}/history/movies'.format(
+                user=slugify(self.username)
+            )
+            # Check if start_date is provided and append the query parameter
+            if start_date:
+                url += f'?start_at={start_date}'
+            
+            data = yield url
+            self._history_movies = []
+            for movie in data:
+                print(f"movie: {movie}\n")
+                movie_data = movie.pop('movie')
+                movie_data.update(movie)
+                self._history_movies.append(Movie(**movie_data))
+            print(f"\n\n\n")
+        yield self._history_movies
 
     @staticmethod
     def get_follower_requests():

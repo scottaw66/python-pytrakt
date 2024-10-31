@@ -10,9 +10,6 @@ This is a fork of the PyTrakt package by Elan Ruusamäe at [https://github.com/g
 For more information on this module's contents and example usages
 please see Elan's excellent [PyTrakt docs](https://glensc.github.io/python-pytrakt/).
 
-More information about getting started and accessing the information you thirst for
-can be found throughout the documentation below.
-
 ## Installation
 
 ### Get the code
