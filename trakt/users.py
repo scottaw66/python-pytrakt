@@ -2,6 +2,7 @@
 """Interfaces to all of the User objects offered by the Trakt.tv API"""
 from dataclasses import dataclass
 from typing import Any, NamedTuple, Optional, Union
+from urllib.parse import urlencode
 
 from trakt.core import delete, get, post
 from trakt.mixins import DataClassMixin, IdsMixin
@@ -329,7 +330,7 @@ class User:
         self.username = username
         self._calendar = self._last_activity = self._watching = None
         self._movies = self._movie_collection = self._movies_watched = self._history_movies = None
-        self._shows = self._show_collection = self._shows_watched = None
+        self._shows = self._show_collection = self._shows_watched = self._history_shows = self._history_episodes = None
         self._lists = self._followers = self._following = self._friends = None
         self._collected = self._watched_shows = self._episode_ratings = None
         self._show_ratings = self._movie_ratings = self._watched_movies = None
@@ -564,9 +565,8 @@ class User:
                            show_id=sh_data.get('trakt'))
             yield TVEpisode(**ep_data)
             
-    @property
     @get
-    def history_movies(self, start_date=None, end_date=None):
+    def get_history_movies(self, start_date=None, end_date=None):
         """Watched history for all :class:`Movie`'s in this :class:`User`'s
         collection.
         """
@@ -576,16 +576,14 @@ class User:
             )
             # Check if start_date is provided and append the query parameter
             if start_date:
-                url += f'?start_at={start_date}'
+                url += f'?start_at={urlencode(start_date)}'
             
             data = yield url
             self._history_movies = []
             for movie in data:
-                print(f"movie: {movie}\n")
                 movie_data = movie.pop('movie')
                 movie_data.update(movie)
-                self._history_movies.append(Movie(**movie_data))
-            print(f"\n\n\n")
+                self._history_movies.append(movie_data)
         yield self._history_movies
 
     @staticmethod
@@ -602,6 +600,67 @@ class User:
         """
         return UserList.get(title, self.username)
 
+    @get
+    def get_history_movies(self, start_date=None):
+        """Watched history for all :class:`Movie`'s in this :class:`User`'s
+        collection.
+        """
+        if self._history_movies is None:
+            url = 'users/{user}/history/movies'.format(
+                user=slugify(self.username)
+            )
+            # Check if start_date is provided and append the query parameter
+            if start_date:
+                url += '?start_at=' + slugify(start_date)
+            
+            data = yield url
+            self._history_movies = []
+            for movie in data:
+                movie_data = movie.pop('movie')
+                movie_data.update(movie)
+                self._history_movies.append(movie_data)
+        yield self._history_movies
+        
+    @get
+    def get_history_shows(self, start_date=None):
+        """Watched history for all :class:`Movie`'s in this :class:`User`'s
+        collection.
+        """
+        if self._history_shows is None:
+            url = 'users/{user}/history/shows'.format(
+                user=slugify(self.username)
+            )
+            # Check if start_date is provided and append the query parameter
+            if start_date:
+                url += '?start_at=' + slugify(start_date)
+            
+            data = yield url
+            self._history_shows = []
+            for show in data:
+                show_data = show.pop('show')
+                show_data.update(show)
+                self._history_shows.append(show_data)
+        yield self._history_shows
+    @get
+    def get_history_episodes(self, start_date=None):
+        """Watched history for all :class:`Movie`'s in this :class:`User`'s
+        collection.
+        """
+        if self._history_episodes is None:
+            url = 'users/{user}/history/episodes'.format(
+                user=slugify(self.username)
+            )
+            # Check if start_date is provided and append the query parameter
+            if start_date:
+                url += '?start_at=' + slugify(start_date)
+            
+            data = yield url
+            self._history_episodes = []
+            for episode in data:
+                episode_data = episode.pop('episode')
+                episode_data.update(episode)
+                self._history_episodes.append(episode_data)
+        yield self._history_episodes
     @get
     def get_ratings(self, media_type='movies', rating=None):
         """Get a user's ratings filtered by type. You can optionally filter for
