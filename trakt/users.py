@@ -564,27 +564,6 @@ class User:
             ep_data.update(data, show=sh_data.get('title'),
                            show_id=sh_data.get('trakt'))
             yield TVEpisode(**ep_data)
-            
-    @get
-    def get_history_movies(self, start_date=None, end_date=None):
-        """Watched history for all :class:`Movie`'s in this :class:`User`'s
-        collection.
-        """
-        if self._history_movies is None:
-            url = 'users/{user}/history/movies'.format(
-                user=slugify(self.username)
-            )
-            # Check if start_date is provided and append the query parameter
-            if start_date:
-                url += f'?start_at={urlencode(start_date)}'
-            
-            data = yield url
-            self._history_movies = []
-            for movie in data:
-                movie_data = movie.pop('movie')
-                movie_data.update(movie)
-                self._history_movies.append(movie_data)
-        yield self._history_movies
 
     @staticmethod
     def get_follower_requests():
@@ -599,9 +578,9 @@ class User:
         your own private lists, you will need to authenticate as yourself.
         """
         return UserList.get(title, self.username)
-
+        
     @get
-    def get_history_movies(self, start_date=None):
+    def get_history_movies(self, start_date=None, end_date=None):
         """Watched history for all :class:`Movie`'s in this :class:`User`'s
         collection.
         """
@@ -620,7 +599,6 @@ class User:
                 movie_data.update(movie)
                 self._history_movies.append(movie_data)
         yield self._history_movies
-        
     @get
     def get_history_shows(self, start_date=None):
         """Watched history for all :class:`Movie`'s in this :class:`User`'s
